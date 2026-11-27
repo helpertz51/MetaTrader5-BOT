@@ -71,10 +71,11 @@ def test_wick_break_without_close_does_not_create_bos():
     assert result.bias is None
 
 
+
 def test_detects_choch_after_opposite_structural_break():
     bars = make_bars(
-        high=[5, 10, 7, 8, 7, 11, 9],
-        low=[3, 4, 5, 2, 4, 5, 0.5],
+        high=[5, 10, 7, 8, 9, 11, 9],
+        low=[2, 4, 5, 2, 4, 5, 0.5],
         close=[4, 8, 6, 7, 6, 11, 1],
     )
 
@@ -90,11 +91,14 @@ def test_detects_choch_after_opposite_structural_break():
 
     assert first.event == "BOS"
     assert first.direction == "bullish"
+    assert first.index == 5
 
     assert second.event == "CHOCH"
     assert second.direction == "bearish"
+    assert second.index == 6
 
     assert result.bias == "bearish"
+    
 
 
 def test_swing_is_not_confirmed_before_right_bars_close():
