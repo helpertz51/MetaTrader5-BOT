@@ -174,4 +174,3 @@ def test_rejects_invalid_swing_parameters(left_bars, right_bars):
             left_bars=left_bars,
             right_bars=right_bars,
         )
-        
