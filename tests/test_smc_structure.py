@@ -1,13 +1,9 @@
-
 """Tests for the SMC market-structure detector."""
 
 import pandas as pd
 import pytest
 
-from mt5bot.smc.structure import (
-    StructureDataError,
-    detect_market_structure,
-)
+from mt5bot.smc.structure import StructureDataError, detect_market_structure
 
 
 def make_bars(high, low, close):
@@ -30,8 +26,7 @@ def test_detects_confirmed_swing_high():
     result = detect_market_structure(bars)
 
     swing_highs = [
-        swing for swing in result.swings
-        if swing.kind == "high"
+        swing for swing in result.swings if swing.kind == "high"
     ]
 
     assert len(swing_highs) == 1
@@ -49,7 +44,6 @@ def test_detects_bullish_bos_after_close_above_swing():
     result = detect_market_structure(bars)
 
     assert len(result.events) == 1
-
     event = result.events[0]
     assert event.event == "BOS"
     assert event.direction == "bullish"
@@ -71,7 +65,6 @@ def test_wick_break_without_close_does_not_create_bos():
     assert result.bias is None
 
 
-
 def test_detects_choch_after_opposite_structural_break():
     bars = make_bars(
         high=[5, 10, 7, 8, 9, 11, 9],
@@ -86,19 +79,15 @@ def test_detects_choch_after_opposite_structural_break():
     )
 
     assert len(result.events) == 2
-
     first, second = result.events
 
     assert first.event == "BOS"
     assert first.direction == "bullish"
     assert first.index == 5
-
     assert second.event == "CHOCH"
     assert second.direction == "bearish"
     assert second.index == 6
-
     assert result.bias == "bearish"
-    
 
 
 def test_swing_is_not_confirmed_before_right_bars_close():
@@ -184,5 +173,5 @@ def test_rejects_invalid_swing_parameters(left_bars, right_bars):
             bars,
             left_bars=left_bars,
             right_bars=right_bars,
-  )
-             
+        )
+        
