@@ -1,0 +1,33 @@
+PHASE 1 — FOUNDATION / ICT SNAPSHOT BRIDGE
+
+Repository: helpertz51/MetaTrader5-BOT
+Branch: integration/deriv-smc-foundation
+
+COPY THESE FILES TO THE REPOSITORY ROOT USING THE PATHS IN THE FILE TREE:
+- mt5bot/smc/snapshot.py
+- mt5bot/smc/bridge.py
+- tests/test_smc_snapshot_reader.py
+- tools/install_ict_library.sh
+- tools/install_ict_library.ps1
+- PHASE_1_INSTALL.txt
+
+PYTHON CHECK (from repository root):
+    python -m unittest tests.test_smc_snapshot_reader
+
+ICT LIBRARY:
+The ICT_Library_MQ5 source is not copied into this package. The installer retrieves
+the upstream repository so its source and MIT license remain attributable.
+The PowerShell script expects the MT5 terminal data directory as its argument;
+the Bash script expects the MQL5 directory itself. On Linux, MT5/MetaEditor
+installation and compilation may require a supported Windows environment.
+
+SNAPSHOT FILE:
+The Python bridge reads smc_snapshot.json from the MT5 Common/Files directory.
+Set MT5_COMMON_FILES to that directory before running the bot, for example on
+Windows PowerShell:
+    $env:MT5_COMMON_FILES = "$env:APPDATA\\MetaQuotes\\Terminal\\Common\\Files"
+
+SAFETY:
+The exporter is data-only. These files do not place orders and do not connect
+to a Deriv account. Validate the MQL5 exporter in MetaEditor and inspect the
+actual exported JSON before integrating with execution. Demo-only testing first.
